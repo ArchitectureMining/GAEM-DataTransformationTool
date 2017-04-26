@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <GeneralSettings>
+    <PathPrefix>d:/d/gaem/</PathPrefix>
+    <OutputDirectory>c:/thesis-data/pseudonymized/</OutputDirectory>
+    <PseudonymizationSalt>salty</PseudonymizationSalt>
+  </GeneralSettings>
+  <ETWSettings>
+    <ProcessETL>false</ProcessETL>
+    <ETLRootDirectory>c:/thesis-data/plain/regression-logs/</ETLRootDirectory>
+    <ETLManifestFile>c:/thesis-data/plain/regression-logs/ETWStabiCAD.man</ETLManifestFile>
+    <PseudonymizeETL>true</PseudonymizeETL>
+  </ETWSettings>
+  <DoxygenSettings>
+    <ProcessDoxygen>true</ProcessDoxygen>
+    <DoxygenRootDirectory>c:/thesis-data/plain/doxygen/</DoxygenRootDirectory>
+    <PseudonymizeDoxygen>true</PseudonymizeDoxygen>
+  </DoxygenSettings>
+</Settings>

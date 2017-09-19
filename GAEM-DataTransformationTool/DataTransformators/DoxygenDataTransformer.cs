@@ -88,95 +88,129 @@ namespace GAEM.DataTransformationTool.DataTransformators
                 string compoundname = compounddef.Element("compoundname").Value;
 
                 DoxyCompound compound = null;
-                switch (kind)
-                {
-                    case "class":
-                        {
-                            compound = new DoxyClass(id,
-                                compounddef.Attribute("language").Value,
-                                compounddef.Element("location").Attribute("file").Value,
-                                compoundname.Split(new string[] { "::" }, StringSplitOptions.None).Last(),
-                                compoundname,
-                                compounddef
-                                    .Elements("sectiondef")
-                                    .Elements("memberdef")
-                                    .Where(x => x.Attribute("kind").Value == "function")
-                                    .Select(x => x.Attribute("id").Value)
-                                    .ToList());
-                        }
-                        break;
-                    case "dir":
-                        {
-                            compound = new DoxyDir(id,
-                                compoundname.Split(new string[] { @"\", "/" }, StringSplitOptions.None).Last(),
-                                compounddef.Element("location").Attribute("file").Value,
-                                compounddef
-                                    .Elements("innerfile")
-                                    .Select(x => x.Attribute("refid").Value)
-                                    .ToList(),
-                                compounddef
-                                    .Elements("innerdir")
-                                    .Select(x => x.Attribute("refid").Value)
-                                    .ToList());
-                        }
-                        break;
-                    case "example":
-                        // ignore
-                        break;
-                    case "group":
-                        //ignore
-                        break;
-                    case "file":
-                        {
-                            compound = new DoxyFile(id,
-                                compounddef.Attribute("language").Value,
-                                compoundname,
-                                compounddef.Element("location").Attribute("file").Value);
-                        }
-                        break;
-                    case "interface":
-                        // ignore
-                        break;
-                    case "namespace":
-                        {
-                            compound = new DoxyNamespace(id,
-                                compounddef.Attribute("language").Value,
-                                compoundname.Split(new string[] { "::" }, StringSplitOptions.None).Last(),
-                                compoundname,
-                                compounddef
-                                    .Elements("innernamespace")
-                                    .Select(x => x.Attribute("refid").Value)
-                                    .ToList(),
-                                compounddef
-                                    .Elements("innerclas")
-                                    .Select(x => x.Attribute("refid").Value)
-                                    .ToList());
-                        }
-                        break;
-                    case "page":
-                        // ignore
-                        break;
-                    case "struct":
-                        {
-                            compound = new DoxyStruct(id,
-                                compounddef.Attribute("language").Value,
-                                compounddef.Element("location").Attribute("file").Value,
-                                compoundname.Split(new string[] { "::" }, StringSplitOptions.None).Last(),
-                                compoundname,
-                                compounddef
-                                    .Elements("sectiondef")
-                                    .Elements("memberdef")
-                                    .Where(x => x.Attribute("kind").Value == "function")
-                                    .Select(x => x.Attribute("id").Value)
-                                    .ToList());
-                        }
-                        break;
-                    case "union":
-                        // ignore
-                        break;
-                    default:
-                        throw new NotImplementedException("ERROR | Not implemented kind = " + kind);
+                try
+                {   
+                    switch (kind)
+                    {
+                        case "class":
+                            {
+                                var temp = new DoxyClass(
+                                    id,
+                                    compounddef.Attribute("language").Value,
+                                    compounddef.Element("location").Attribute("file").Value,
+                                    compounddef.Element("location").Attribute("bodyfile") != null ? compounddef.Element("location").Attribute("bodyfile").Value : null,
+                                    compoundname.Split(new string[] { "::" }, StringSplitOptions.None).Last(),
+                                    compoundname,
+                                    compounddef
+                                        .Elements("sectiondef")
+                                        .Elements("memberdef")
+                                        .Where(x => x.Attribute("kind").Value == "function")
+                                        .Select(x => new DoxyFunction(
+                                            x.Attribute("id").Value,
+                                            x.Element("location").Attribute("file").Value,
+                                            x.Element("location").Attribute("bodyfile") != null ? x.Element("location").Attribute("bodyfile").Value : null,
+                                            x.Element("name").Value,
+                                            x.Element("definition").Value.Split(new char[] { ' ' }).Last()))
+                                        .ToList(),
+                                    compounddef
+                                        .Elements("innerclass")
+                                        .Select(x => x.Attribute("refid").Value)
+                                        .ToList());
+                            }
+                            break;
+                        case "dir":
+                            {
+                                compound = new DoxyDir(
+                                    id,
+                                    compoundname.Split(new string[] { @"\", "/" }, StringSplitOptions.None).Last(),
+                                    compounddef.Element("location").Attribute("file").Value,
+                                    compounddef
+                                        .Elements("innerfile")
+                                        .Select(x => x.Attribute("refid").Value)
+                                        .ToList(),
+                                    compounddef
+                                        .Elements("innerdir")
+                                        .Select(x => x.Attribute("refid").Value)
+                                        .ToList());
+                            }
+                            break;
+                        case "example":
+                            // ignore
+                            break;
+                        case "group":
+                            //ignore
+                            break;
+                        case "file":
+                            {
+                                compound = new DoxyFile(
+                                    id,
+                                    compounddef.Attribute("language").Value,
+                                    compoundname,
+                                    compounddef.Element("location").Attribute("file").Value,
+                                    compounddef
+                                        .Elements("innerclass")
+                                        .Select(x => x.Attribute("refid").Value)
+                                        .ToList());
+                            }
+                            break;
+                        case "interface":
+                            // ignore
+                            break;
+                        case "namespace":
+                            {
+                                compound = new DoxyNamespace(
+                                    id,
+                                    compounddef.Attribute("language").Value,
+                                    compoundname.Split(new string[] { "::" }, StringSplitOptions.None).Last(),
+                                    compoundname,
+                                    compounddef
+                                        .Elements("innernamespace")
+                                        .Select(x => x.Attribute("refid").Value)
+                                        .ToList(),
+                                    compounddef
+                                        .Elements("innerclas")
+                                        .Select(x => x.Attribute("refid").Value)
+                                        .ToList());
+                            }
+                            break;
+                        case "page":
+                            // ignore
+                            break;
+                        case "struct":
+                            {
+                                compound = new DoxyStruct(
+                                    id,
+                                    compounddef.Attribute("language").Value,
+                                    compounddef.Element("location").Attribute("file").Value,
+                                    compounddef.Element("location").Attribute("bodyfile") != null ? compounddef.Element("location").Attribute("bodyfile").Value : null,
+                                    compoundname.Split(new string[] { "::" }, StringSplitOptions.None).Last(),
+                                    compoundname,
+                                    compounddef
+                                        .Elements("sectiondef")
+                                        .Elements("memberdef")
+                                        .Where(x => x.Attribute("kind").Value == "function")
+                                        .Select(x => new DoxyFunction(
+                                            x.Attribute("id").Value,
+                                            x.Element("location").Attribute("file").Value,
+                                            x.Element("location").Attribute("bodyfile") != null ? x.Element("location").Attribute("bodyfile").Value : null,
+                                            x.Element("name").Value,
+                                            x.Element("definition").Value.Split(new char[] { ' ' }).Last()))
+                                        .ToList());
+                            }
+                            break;
+                        case "union":
+                            // ignore
+                            break;
+                        default:
+                            throw new NotImplementedException("ERROR | Not implemented kind = " + kind);
+                    }
                 }
+                catch (Exception e)
+                {
+                    Console.Write("id: " + id);
+                    throw e;
+                }
+
                 if (compound != null)
                 {
                     transformedXElements.Add(compound.ToXElement());

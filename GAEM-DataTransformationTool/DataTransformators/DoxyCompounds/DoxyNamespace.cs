@@ -25,6 +25,11 @@ namespace GAEM.DataTransformationTool.DataTransformators.DoxyCompounds
             InnerClassIds = innerClassIds.Select(x => Pseudonymizer.PseudonymizeString(x)).ToList();
         }
 
+        public override string ToCSVLine()
+        {
+            return String.Join(",", new[] { Name, Fullname, Language });
+        }
+
         public override XElement ToXElement()
         {
             return new XElement("DoxyNamespace",

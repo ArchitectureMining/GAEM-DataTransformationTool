@@ -32,7 +32,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -77,13 +77,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataTransformators\DataTransformer.cs" />
+    <Compile Include="DataTransformators\DoxyCompounds\Doxy.cs" />
     <Compile Include="DataTransformators\DoxyCompounds\DoxyClass.cs" />
     <Compile Include="DataTransformators\DoxyCompounds\DoxyCompound.cs" />
     <Compile Include="DataTransformators\DoxyCompounds\DoxyDir.cs" />
     <Compile Include="DataTransformators\DoxyCompounds\DoxyFile.cs" />
+    <Compile Include="DataTransformators\DoxyCompounds\DoxyFunction.cs" />
     <Compile Include="DataTransformators\DoxyCompounds\DoxyNamespace.cs" />
+    <Compile Include="DataTransformators\DoxyCompounds\DoxyRelation.cs" />
     <Compile Include="DataTransformators\DoxyCompounds\DoxyStruct.cs" />
+    <Compile Include="DataTransformators\DoxygenCSVDataTransformer.cs" />
     <Compile Include="DataTransformators\DoxygenDataTransformer.cs" />
+    <Compile Include="DataTransformators\DoxygenToNeo4jImportToolTransformer.cs" />
     <Compile Include="DataTransformators\ETWDataTransformer.cs" />
     <Compile Include="GlobalSettings.cs" />
     <Compile Include="Program.cs" />

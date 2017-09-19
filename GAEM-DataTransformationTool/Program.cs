@@ -44,7 +44,7 @@ namespace GAEM.DataTransformationTool
             if (GlobalSettings.DoxygenSettings.ProcessDoxygen)
             {
                 Console.WriteLine(DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss.ff") + " | INFO | Starting to transform Doxygen data.");
-                new DoxygenDataTransformer().Transform();
+                new DoxygenCSVDataTransformer().Transform();
                 Console.WriteLine(DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss.ff") + " | INFO | Finished transforming Doxygen data.");
             }
             

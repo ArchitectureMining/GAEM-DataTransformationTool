@@ -23,6 +23,11 @@ namespace GAEM.DataTransformationTool.DataTransformators.DoxyCompounds
             InnerDirIds = innerDirIds.Select(x => Pseudonymizer.PseudonymizeString(x)).ToList();
         }
 
+        public override string ToCSVLine()
+        {
+            return String.Join(",", new[] { Name, Location });
+        }
+
         public override XElement ToXElement()
         {
             return new XElement("DoxyDir",
